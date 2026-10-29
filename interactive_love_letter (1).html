@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لـ نوني 💌</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #fce4ec; /* خلفية وردية هادئة ناعمة */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* القلوب العائمة في الخلفية */
+        .bg-heart {
+            position: fixed;
+            color: rgba(233, 30, 99, 0.25);
+            font-size: 20px;
+            animation: floatUp 6s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 420px;
+            z-index: 10;
+        }
+
+        /* غلاف الظرف */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 190px;
+            margin: 40px auto 0;
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .envelope {
+            width: 100%;
+            height: 100%;
+            background: #e57373; /* لون الظرف الرئيسي */
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+            transition: transform 0.6s ease;
+            transform-style: preserve-3d;
+        }
+
+        /* غطاء الظرف العلوي */
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 105px solid #d32f2f;
+            transform-origin: top;
+            transition: transform 0.6s ease 0.4s, z-index 0.2s ease 0.4s;
+            z-index: 5;
+        }
+
+        /* جيب الظرف الأمامي */
+        .pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid #ef5350;
+            border-right: 150px solid #ef5350;
+            border-bottom: 100px solid #e53935;
+            border-radius: 0 0 12px 12px;
+            z-index: 4;
+        }
+
+        /* ختم القلب النابض */
+        .heart-seal {
+            position: absolute;
+            top: 90px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 46px;
+            height: 46px;
+            background: #c2185b;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 22px;
+            z-index: 6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            animation: pulse 1.5s infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.12); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* ورقة الجواب نفسها */
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 270px;
+            height: 165px;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+            z-index: 2;
+            opacity: 0;
+            text-align: right;
+            overflow-y: auto;
+            line-height: 1.7;
+            color: #4a4a4a;
+            font-size: 14.5px;
+            border: 1px solid #f1f1f1;
+        }
+
+        /* تخصيص شريط التمرير (Scrollbar) ليكون أنيقاً وناحيفاً جداً مثل التصميم الأصلي */
+        .letter::-webkit-scrollbar {
+            width: 4px;
+        }
+        .letter::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .letter::-webkit-scrollbar-thumb {
+            background: #f48fb1;
+            border-radius: 10px;
+        }
+
+        /* حالة فتح الجواب */
+        .open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .open .heart-seal {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .open .letter {
+            transform: translateY(-120px);
+            height: 290px;
+            opacity: 1;
+            z-index: 10;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+        }
+
+        .paragraph {
+            margin-bottom: 12px;
+        }
+
+        .signature {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #d81b60;
+            text-align: left;
+            font-size: 15px;
+            padding-bottom: 5px;
+        }
+
+        /* زِر إعادة الإغلاق الناعم */
+        .close-btn {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #888;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .close-btn:hover {
+            color: #d81b60;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="envelope-wrapper" id="envelopeWrapper" onclick="openLetter()">
+            <div class="envelope" id="envelope">
+                <div class="flap"></div>
+                <div class="heart-seal">❤️</div>
+                <div class="pocket"></div>
+                <div class="letter" id="letter">
+                    <p class="paragraph">عارف إن الفترة دي ممكن تكون مش احسن حاجة بالنسبلك بالذات في اليومين الي فاتوا دول، وعارف انك مضغوطة فيها أو محتاجة شوية وقت لوحدك تفصلي فيه..</p>
+                    <p class="paragraph">بس انتي عارفه اني مبقدرش اسيبك حاسه بإحساس وحش او كده واني دايما جمبك ومعاكي في اي حاجة بجد، وحابب أقولك إن ده حقك وأنا مقدر ده كويس.</p>
+                    <p class="paragraph">أنا بس حبيت أفكرك إن مهما كانت الظروف أو لو محتاجة أي مساحة أو كده فا مش هديهالك بصراحة! انا قاعد علي قلبك، ازاي تبقي بعيده عن بوتييي يعنييي ها! 😂❤️</p>
+                    <p class="paragraph">بس عموماً انا مش هسيبك، وأنا موجود ودايمًا في ضهرك.. بحبك اوي اوي اوي يا نوني بجد.</p>
+                    <div class="signature">من بوتي 💌</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // فتح الجواب عند الضغط
+        function openLetter() {
+            const wrapper = document.getElementById('envelopeWrapper');
+            if (!wrapper.classList.contains('open')) {
+                wrapper.classList.add('open');
+                createBurstHearts();
+            }
+        }
+
+        // إنشاء قلوب متحركة في الخلفية بصفة مستمرة
+        function createBgHearts() {
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('bg-heart');
+                    heart.innerHTML = ['❤️', '💖', '💕', '🌸'][Math.floor(Math.random() * 4)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    document.body.appendChild(heart);
+                }, i * 400);
+            }
+        }
+        createBgHearts();
+        setInterval(createBgHearts, 6000);
+
+        // انفجار القلوب عند فتح الجواب
+        function createBurstHearts() {
+            for (let i = 0; i < 18; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('bg-heart');
+                    heart.style.color = '#e91e63';
+                    heart.style.zIndex = '15';
+                    heart.innerHTML = ['❤️', '💖', '💕', '✨'][Math.floor(Math.random() * 4)];
+                    heart.style.left = (Math.random() * 60 + 20) + 'vw';
+                    heart.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 3500);
+                }, i * 120);
+            }
+        }
+    </script>
+</body>
+</html>
